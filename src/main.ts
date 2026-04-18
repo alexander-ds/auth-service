@@ -4,34 +4,43 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 🔐 Configuración global de variables de entorno
   const configService = app.get(ConfigService);
 
-  // 🌐 CORS (importante para frontend)
-  app.enableCors({
-    origin: '*', // en producción pon tu dominio
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-  });
+  // 🌐 CORS
+  app.enableCors();
 
-  // 🧪 Validación automática de DTOs
+  // 🧪 ValidationPipe
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // elimina campos no definidos en DTO
-      forbidNonWhitelisted: true, // lanza error si envían campos extra
-      transform: true, // transforma payloads a clases
+      whitelist: true,
+      transform: true,
     }),
   );
 
-  // 🚀 Puerto desde .env
+  // 📚 Swagger config
+  const config = new DocumentBuilder()
+    .setTitle('Auth Service')
+    .setDescription('Microservicio de autenticación con JWT')
+    .setVersion('1.0')
+    .addBearerAuth() // 🔐 habilita JWT en Swagger
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('docs', app, document); 
+  // 👉 http://localhost:3000/docs
+
   const port = configService.get<number>('PORT') || 3000;
 
   await app.listen(port);
 
-  console.log(`🚀 Auth service running on: http://localhost:${port}`);
+  console.log(`🚀 Running on http://localhost:${port}`);
+  console.log(`📚 Swagger available on http://localhost:${port}/docs`);
 }
 
 bootstrap();
