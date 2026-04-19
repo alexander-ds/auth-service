@@ -11,19 +11,13 @@ import { DbModule } from './db/db.module';
 
 @Module({
   imports: [
-    // 🌍 Variables de entorno globales
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
-    // 🗄️ Base de datos (Postgres pool)
     DbModule,
-
-    // 👤 Usuarios
     UsersModule,
-
-    // 🔐 Auth (JWT, login, register)
     AuthModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

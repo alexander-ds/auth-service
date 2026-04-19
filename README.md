@@ -1,8 +1,8 @@
-# 🔐 Auth Service - NestJS + JWT
+# Auth Service - NestJS + JWT
 
 Este microservicio maneja autenticación basada en JWT.
 
-## 🚀 Tecnologías
+## Tecnologías
 
 * NestJS
 * PostgreSQL
@@ -11,7 +11,7 @@ Este microservicio maneja autenticación basada en JWT.
 
 ---
 
-## ⚙️ Configuración
+## Configuración
 
 1. Clonar el proyecto
 2. Crear archivo `.env`:
@@ -26,7 +26,7 @@ JWT_SECRET=super_secret_key
 
 ---
 
-## 🗄️ Base de datos
+## Base de datos
 
 Tabla `users`:
 
@@ -37,14 +37,14 @@ Tabla `users`:
 
 ---
 
-## ▶️ Ejecutar proyecto
+## Ejecutar proyecto
 
 npm install
 npm run start:dev
 
 ---
 
-## 🔑 Endpoints
+## Endpoints
 
 ### Registro
 
@@ -75,7 +75,7 @@ Respuesta:
 
 ---
 
-## 🛡️ Autenticación
+## Autenticación
 
 Usa header:
 
@@ -83,7 +83,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 🔄 Flujo de autenticación
+## Flujo de autenticación
 
 1. Usuario se registra
 2. Usuario hace login
@@ -93,7 +93,7 @@ Authorization: Bearer <token>
 
 ---
 
-## ⚠️ Buenas prácticas
+## Buenas prácticas
 
 * Nunca guardar passwords en texto plano
 * Usar bcrypt para hash
@@ -102,7 +102,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 📦 Ejemplo Payload JWT
+## Ejemplo Payload JWT
 
 {
 "sub": "user_id",
@@ -113,7 +113,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 🧠 Arquitectura
+## Arquitectura
 
 Este servicio forma parte de una arquitectura de microservicios:
 
@@ -123,7 +123,7 @@ Este servicio forma parte de una arquitectura de microservicios:
 
 ---
 
-## 🚀 Mejoras futuras
+## Mejoras futuras
 
 * Refresh tokens
 * Roles (admin/user)
