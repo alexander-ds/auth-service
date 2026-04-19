@@ -130,3 +130,9 @@ Este servicio forma parte de una arquitectura de microservicios:
 * OAuth (Google, GitHub)
 * Rate limiting
 * API Gateway
+
+---
+
+## Autor
+
+ALX
