@@ -11,9 +11,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string) {
+  async register(email: string, password: string, name?: string) {
     const hash = await bcrypt.hash(password, 10);
-    return this.usersService.create(email, hash);
+    return this.usersService.create(email, hash, name);
   }
 
   async login(email: string, password: string) {
@@ -21,7 +21,7 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException();
 
-    const valid = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) throw new UnauthorizedException();
 
     return {

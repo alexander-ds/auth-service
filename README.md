@@ -28,12 +28,19 @@ JWT_SECRET=super_secret_key
 
 ## Base de datos
 
+El esquema completo se encuentra en `db/schema.sql`.
+
 Tabla `users`:
 
 * id (UUID)
 * email (único)
-* password (hash)
+* password_hash
+* name
+* active
+* email_verified
+* last_login_at
 * created_at
+* updated_at
 
 ---
 
@@ -89,7 +96,7 @@ Authorization: Bearer <token>
 2. Usuario hace login
 3. Se genera JWT
 4. Cliente envía token en cada request
-5. Backend valida token
+5. inventory-service valida token
 
 ---
 

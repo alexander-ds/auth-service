@@ -9,10 +9,10 @@ export class UsersService {
     private readonly db: DbService
 ) {}
 
-  async create(email: string, password: string) {
+  async create(email: string, passwordHash: string, name?: string) {
     const result = await this.db.query(
-      'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
-      [email, password],
+      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING *',
+      [email, passwordHash, name ?? null],
     );
     return result.rows[0];
   }
