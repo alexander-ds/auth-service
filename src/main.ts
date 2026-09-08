@@ -12,7 +12,11 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // CORS
-  app.enableCors();
+  app.enableCors({
+    origin: true,
+    allowedHeaders: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  });
 
   // ValidationPipe
   app.useGlobalPipes(
