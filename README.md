@@ -1,145 +1,85 @@
-# Auth Service - NestJS + JWT
+# EjercicioIA - auth-service
 
-Este microservicio maneja autenticación basada en JWT.
+Microservicio de autenticación del sistema de inventario desarrollado en **Node.js (NestJS)**.
 
-## Tecnologías
+No implementa lógica de negocio: su única responsabilidad es autenticar usuarios y emitir JWT válidos.
 
-* NestJS
-* PostgreSQL
-* JWT (jsonwebtoken)
+## Responsabilidades
+
+* Login.
+* Usuarios.
+* Password hashing.
+* Validación de credenciales.
+* Generación de JWT.
+* Futura gestión de roles.
+
+## Stack
+
+* Node.js + NestJS
+* Passport + passport-jwt
 * bcrypt
+* PostgreSQL (`pg`)
+* Swagger UI
 
----
+## Repositorios
 
-## Configuración
-
-1. Clonar el proyecto
-2. Crear archivo `.env`:
-
-PORT=3000
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=admin
-DB_NAME=auth-db
-JWT_SECRET=super_secret_key
-
----
+| Proyecto | Descripción | Repositorio |
+|---|---|---|
+| `EjercicioIA-inventario` | Repositorio principal: documentación, scripts SQL y orquestación del proyecto | https://github.com/alexander-ds/EjercicioIA-inventario |
+| `auth-service` | Microservicio de autenticación (Node.js): login, users, roles, permisos y generación de JWT | https://github.com/alexander-ds/auth-service |
+| `inventory-service` | API principal (Spring Boot): lógica de negocio, inventario, autorización y validación del JWT | https://github.com/alexander-ds/inventory-service |
+| `inventory-front` | Aplicación web (React): interfaz de usuario, login/logout y consumo de APIs | https://github.com/alexander-ds/inventory-front |
 
 ## Base de datos
 
-El esquema completo se encuentra en `db/schema.sql`.
+* `auth_db` — pertenece exclusivamente a `auth-service`.
 
-Tabla `users`:
+Esquema:
 
-* id (UUID)
-* email (único)
-* password_hash
-* name
-* active
-* email_verified
-* last_login_at
-* created_at
-* updated_at
+```text
+auth_db
+├── users
+├── roles
+├── permissions
+├── user_roles
+├── role_permissions
+└── refresh_tokens
+```
 
----
+Los passwords se almacenan únicamente como hash (bcrypt), nunca en texto plano.
 
-## Ejecutar proyecto
+Los scripts SQL de creación e inserts de ejemplo están en `../DDBB/` (`auth.sql`, `insert-auth.sql`).
 
-npm install
-npm run start:dev
+## Credenciales de ejemplo
 
----
+Clave de los usuarios de desarrollo: `123456`
 
-## Endpoints
+| Usuario | Rol |
+|---|---|
+| `admin@inventory.local` | ADMIN |
+| `seller@inventory.local` | SELLER |
+| `ALX@email.com` | SELLER |
+| `test@email.com` | CLIENT |
 
-### Registro
+## Seguridad
 
-POST /auth/register
+Nunca hardcodear ni commitear:
 
-Body:
-{
-"email": "[user@test.com](mailto:user@test.com)",
-"password": "123456"
-}
+```text
+JWT_SECRET
+DATABASE_PASSWORD
+API_KEYS
+```
 
----
+Los valores dependientes del entorno se configuran externamente (`.env` — ver `.env.example`).
 
-### Login
+## Documentación
 
-POST /auth/login
+* `../docs/authentication.md` — flujo de autenticación y JWT.
+* `../docs/api-contract.md` — contratos de los endpoints.
+* `../docs/databases.md` — estructura de bases de datos.
+* `../docs/decisions/` — ADRs (decisiones de arquitectura).
 
-Body:
-{
-"email": "[user@test.com](mailto:user@test.com)",
-"password": "123456"
-}
+## Estándares
 
-Respuesta:
-{
-"access_token": "JWT_TOKEN"
-}
-
----
-
-## Autenticación
-
-Usa header:
-
-Authorization: Bearer <token>
-
----
-
-## Flujo de autenticación
-
-1. Usuario se registra
-2. Usuario hace login
-3. Se genera JWT
-4. Cliente envía token en cada request
-5. inventory-service valida token
-
----
-
-## Buenas prácticas
-
-* Nunca guardar passwords en texto plano
-* Usar bcrypt para hash
-* Mantener JWT_SECRET seguro
-* Configurar expiración del token
-
----
-
-## Ejemplo Payload JWT
-
-{
-"sub": "user_id",
-"email": "[user@test.com](mailto:user@test.com)",
-"iat": 123456,
-"exp": 123999
-}
-
----
-
-## Arquitectura
-
-Este servicio forma parte de una arquitectura de microservicios:
-
-* auth-service → autenticación
-* user-db → usuarios
-* otros servicios consumen JWT
-
----
-
-## Mejoras futuras
-
-* Refresh tokens
-* Roles (admin/user)
-* OAuth (Google, GitHub)
-* Rate limiting
-* API Gateway
-
----
-
-## Autor
-
-ALX
+Antes de trabajar en el código, leer `AGENTS.md` de la raíz y el `AGENTS.md` de este módulo.
