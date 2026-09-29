@@ -42,9 +42,8 @@ lerna-debug.log*
 .env.production.local
 .env.local
 
-# package lock 
-
-package-lock.json
+# package lock
+# package-lock.json se versiona intencionalmente: CI usa `npm ci` y requiere builds reproducibles.
 
 # temp directory
 .temp

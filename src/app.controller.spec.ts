@@ -15,8 +15,23 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return the running banner', () => {
+      expect(appController.getHello()).toBe(
+        '\u{1F680} Auth Service is running correctly',
+      );
+    });
+  });
+
+  describe('health', () => {
+    it('should report status ok', () => {
+      expect(appController.getHealth()).toMatchObject({
+        status: 'ok',
+        service: 'auth-service',
+      });
+    });
+
+    it('should include an ISO timestamp', () => {
+      expect(appController.getHealth()).toHaveProperty('timestamp');
     });
   });
 });
