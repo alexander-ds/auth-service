@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { DbService } from './../src/db/db.service';
@@ -93,6 +94,18 @@ describe('Auth (e2e)', () => {
       expect(payload.email).toBe(uniqueEmail);
       expect(payload.sub).toBeDefined();
       expect(payload.name).toBe('E2E User');
+    });
+
+    it('debe firmar con JWT_SECRET del entorno', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: uniqueEmail, password: '123456' });
+
+      const payload = jwt.verify(res.body.access_token, process.env.JWT_SECRET!, {
+        algorithms: ['HS256'],
+      });
+
+      expect(payload).toHaveProperty('sub', expect.any(String));
     });
 
     it('debe expirar el token en 1 hora', async () => {
